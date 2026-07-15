@@ -1,0 +1,41 @@
+<!-- React front end: fetches /players from the same-origin Express API and
+     renders a live-searchable list. Served by server.js (express.static), so
+     open it at http://localhost:4000/index.html — not as a local file, or
+     the fetch will fail cross-origin. -->
+
+<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState, useEffect } = React;
+
+function App() {
+  const [players, setPlayers] = useState([]);
+  useEffect(() => {
+    fetch('/players')
+      .then(res => res.json())
+      .then(data => setPlayers(data));
+  }, []);
+
+  const [q, setQ] = useState('');
+  const shown = players.filter(p => p.name.toLowerCase().includes(q.toLowerCase()));
+
+  return (
+    <div>
+      <h1>Players</h1>
+      <p>{players.length} players</p>
+      <input value={q} onChange={e => setQ(e.target.value)} placeholder="search" />
+      <ul>
+        {shown.map(p => (
+          <li key={p.id}>{p.name} | {p.team} | {p.position} | Conference: {p.conference} | {p.points} ppg</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
