@@ -3,12 +3,16 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "test": "playwright test"
   },
   "license": "ISC",
   "description": "Full-stack sports data pipeline: Python ingestion -> Postgres -> Express API -> React front end.",
   "dependencies": {
     "express": "^5.2.1",
     "pg": "^8.22.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.61.1"
   }
 }

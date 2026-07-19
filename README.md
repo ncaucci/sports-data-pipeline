@@ -47,6 +47,15 @@ A player's name starts out as a field called `strPlayer` in a public sports API'
    ```
    It's safe to run more than once — the upsert means repeat runs update existing rows rather than duplicating them.
 
+## Testing
+
+End-to-end tests (`tests/app.spec.js`) run with Playwright against a live instance of the app: the front end loads and renders players from the API, the search box filters the visible list, and `/health` reports OK. Run them locally with:
+```
+npx playwright install --with-deps chromium
+npm test
+```
+They also run automatically on every push via GitHub Actions (`.github/workflows/ci.yml`), against a real Postgres service container.
+
 ## Data quality notes
 
 The source API is incomplete: it provides a player's name, team, and position, but no points total and no conference. The ingestion pipeline fills those two gaps with defaults (`0` for points, `"Unknown"` for conference) rather than rejecting the row — you can see both defaults show up in the UI for any player the source didn't have full stats for. The pipeline is safe to re-run any number of times because every insert is keyed on the player's unique name and upserts on conflict, rather than blindly inserting. Normalizing messy, incomplete source data like this isn't a flaw in the project — it's the actual day-to-day job in sports-data engineering, where no third-party feed is ever as clean as the schema you want to query.
@@ -57,6 +66,4 @@ Built in a 13-day, one-layer-per-day sprint: starting with core JavaScript funda
 
 ## What's next
 
-- End-to-end tests with Playwright
-- A CI pipeline to run tests and lint on every push
 - A real React build setup (Vite or similar) instead of the current CDN + Babel setup
