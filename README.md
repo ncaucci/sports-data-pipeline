@@ -54,7 +54,6 @@ End-to-end tests (`tests/app.spec.js`) run with Playwright against a live instan
 npx playwright install --with-deps chromium
 npm test
 ```
-They also run automatically on every push via GitHub Actions (`.github/workflows/ci.yml`), against a real Postgres service container.
 
 ## Data quality notes
 
@@ -66,4 +65,5 @@ Built in a 13-day, one-layer-per-day sprint: starting with core JavaScript funda
 
 ## What's next
 
+- A CI pipeline to run the Playwright suite on every push
 - A real React build setup (Vite or similar) instead of the current CDN + Babel setup
